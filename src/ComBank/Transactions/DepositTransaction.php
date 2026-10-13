@@ -13,6 +13,21 @@ use ComBank\Transactions\Contracts\BankTransactionInterface;
 class DepositTransaction 
 {
 
-
+    public function applyTransaction(BankAccountInterface $bankAccount) :float {
+        $bankAccount->
+        $bankAccount->getAmount() +150.00;
+    
+        // cambiar aquí el valor     
+        return $this->ancho * $this->alto;
+    }
+    
+    public function getTransaction() :string{
+        // cambiar aquí el valor
+        return 2 * ($this->ancho + $this->alto);
+    }
+    public function getAmount() :float{
+        // cambiar aquí el valor
+        return 2 * ($this->ancho + $this->alto);
+    }
    
 }
