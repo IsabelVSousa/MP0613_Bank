@@ -1,4 +1,6 @@
-<?php namespace ComBank\Transactions;
+<?php
+
+namespace ComBank\Transactions;
 
 /**
  * Created by VS Code.
@@ -9,25 +11,31 @@
 
 use ComBank\Bank\Contracts\BankAccountInterface;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
+use Override;
 
-class DepositTransaction 
+class DepositTransaction implements BankTransactionInterface
 {
+    private float $amount;
 
-    public function applyTransaction(BankAccountInterface $bankAccount) :float {
-        $bankAccount->
-        $bankAccount->getAmount() +150.00;
-    
-        // cambiar aquí el valor     
-        return $this->ancho * $this->alto;
+    public function __construct(float $amount)
+    {
+        $this->amount = $amount;
     }
-    
-    public function getTransaction() :string{
+
+    public function applyTransaction(BankAccountInterface $bankAccount): float
+    {
+        return $bankAccount->getBalance() + $this->amount;
+    }
+
+    public function getTransactionInfo(): string
+    {
         // cambiar aquí el valor
-        return 2 * ($this->ancho + $this->alto);
+        return 'Transaction info';
     }
-    public function getAmount() :float{
+    public function getAmount(): float
+    {
         // cambiar aquí el valor
-        return 2 * ($this->ancho + $this->alto);
+        return $this->amount;
     }
-   
+
 }

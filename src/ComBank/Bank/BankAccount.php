@@ -19,11 +19,12 @@ use ComBank\Exceptions\InvalidOverdraftFundsException;
 use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
 use ComBank\Support\Traits\AmountValidationTrait;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
+use Override;
 use PhpParser\Node\Expr\Cast\Double;
 use PhpParser\Node\Stmt\TryCatch;
 use PHPUnit\Event\Test\FailedSubscriber;
 
-class BankAccount
+class BankAccount implements BankAccountInterface 
 {
     private float $balance;
     private bool $status;
@@ -31,33 +32,48 @@ class BankAccount
     public function __construct(float $balance)
     {
         $this->balance = $balance;
-        $this->status = false;
+        $this->status = true;
     }
 
     public function getBalance(): float
     {
         return $this->balance;
     }
+    public function setBalance(float $newBalance): void
+    {
+        $this->balance = $newBalance;
+    }
     public function reopenAccount(): void
     {
-        if($this->status){
+        if ($this->status) {
             throw new BankAccountException('The account its already open');
         }
 
         $this->status = true;
-        echo 'Opening bank account';
     }
     public function closeAccount(): void
     {
-        if(!$this->status){
+        if (!$this->status) {
             throw new BankAccountException('The account its already closed');
         }
 
         $this->status = false;
-        echo 'Closing bank account';
     }
 
-    public function transaction(BrankTransactionInterface $bankAccount): void{
+    public function isOpen(): bool
+    {
+        return $this->status;
+    }
 
+    public function transaction(BankTransactionInterface $bankTransaction): void
+    {
+       
+        if (!$this->isOpen()) {
+            throw new BankAccountException('The account is closed.');
+        }
+
+
+        $newBalance = $bankTransaction->applyTransaction($this);  
+        $this->setBalance($newBalance);
     }
 }
