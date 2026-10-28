@@ -116,3 +116,13 @@ try {
 } catch (InvalidOverdraftFundsException $e) {
     pl('Error transaction: ' . $e->getMessage());
 }
+
+pl('My account is now closed.');
+$bankAccount2->closeAccount();
+
+try {
+    pl('Trying to close an already closed account');
+    $bankAccount2->closeAccount();
+} catch (BankAccountException $e) {
+    pl($e->getMessage());
+}
