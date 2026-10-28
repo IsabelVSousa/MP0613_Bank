@@ -11,14 +11,13 @@ namespace ComBank\Transactions;
 
 use ComBank\Bank\Contracts\BankAccountInterface;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
-use Override;
 
-class DepositTransaction implements BankTransactionInterface
+class DepositTransaction extends BaseTransaction implements BankTransactionInterface
 {
-    private float $amount;
 
     public function __construct(float $amount)
     {
+        $this->validateAmount($amount);
         $this->amount = $amount;
     }
 
@@ -29,13 +28,7 @@ class DepositTransaction implements BankTransactionInterface
 
     public function getTransactionInfo(): string
     {
-        // cambiar aquí el valor
-        return 'Transaction info';
-    }
-    public function getAmount(): float
-    {
-        // cambiar aquí el valor
-        return $this->amount;
+        return 'DEPOSIT_TRANSACTION';
     }
 
 }

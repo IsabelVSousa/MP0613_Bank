@@ -7,7 +7,7 @@
  * Time: 1:31 PM
  */
 
-class InvalidOverdraftFundsException extends BaseExceptions
+class InvalidOverdraftFundsException extends FailedTransactionException
 {
     protected $errorCode = 200;
     protected $errorLabel = 'InvalidOverdraftFundsException';

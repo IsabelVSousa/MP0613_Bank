@@ -8,7 +8,7 @@ namespace ComBank\Bank;
  * Date: 7/27/24
  * Time: 7:25 PM
  */
-
+ 
 use ComBank\Exceptions\BankAccountException;
 use ComBank\Exceptions\InvalidArgsException;
 use ComBank\Exceptions\ZeroAmountException;
@@ -19,22 +19,26 @@ use ComBank\Exceptions\InvalidOverdraftFundsException;
 use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
 use ComBank\Support\Traits\AmountValidationTrait;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
-use Override;
-use PhpParser\Node\Expr\Cast\Double;
-use PhpParser\Node\Stmt\TryCatch;
-use PHPUnit\Event\Test\FailedSubscriber;
+
 
 class BankAccount implements BankAccountInterface 
 {
     private float $balance;
     private bool $status;
 
+    private OverdraftInterface $overdraft;
+
     public function __construct(float $balance)
     {
         $this->balance = $balance;
         $this->status = true;
+        $this->overdraft = new NoOverdraft();
     }
 
+    public function getOverdraft(): OverdraftInterface
+    {
+        return $this->overdraft;
+    }
     public function getBalance(): float
     {
         return $this->balance;
@@ -75,5 +79,10 @@ class BankAccount implements BankAccountInterface
 
         $newBalance = $bankTransaction->applyTransaction($this);  
         $this->setBalance($newBalance);
+    }
+
+    public function applyOverdraft(OverdraftInterface $overdraft): void
+    {
+        $this->overdraft = $overdraft;
     }
 }

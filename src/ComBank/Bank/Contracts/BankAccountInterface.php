@@ -30,4 +30,8 @@ interface BankAccountInterface
     public function getBalance(): float;
 
     public function setBalance(float $newBalance): void;
+
+    public function getOverdraft(): OverdraftInterface; 
+
+    public function applyOverdraft(OverdraftInterface $overdraft): void;
 }
