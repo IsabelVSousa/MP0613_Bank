@@ -24,6 +24,8 @@ require_once 'bootstrap.php';
 // create a new account1 with balance 400
 $bankAccount1 = new BankAccount(400);
 $bankAccount2 = new BankAccount(200);
+$bankAccount3 = new BankAccount(200);
+$bankAccount2->setEmail('john.smith@example.com');
 $bankAccount2->applyOverdraft(new SilverOverdraft());
 
 pl('--------- [Start testing bank account #1, No overdraft] --------');
@@ -126,3 +128,10 @@ try {
 } catch (BankAccountException $e) {
     pl($e->getMessage());
 }
+
+
+//---[Bank account 3]---/
+pl('--------- [Start testing bank account #3, Email validation] --------');
+pl('Is my email correct?');
+$bankAccount3->setEmail( 'john.smith@example.com');
+pl('My email is: ' . $bankAccount3->getEmail());
