@@ -16,6 +16,7 @@ use ComBank\Exceptions\BankAccountException;
 use ComBank\Exceptions\FailedTransactionException;
 use ComBank\Exceptions\ZeroAmountException;
 use ComBank\Exceptions\InvalidOverdraftFundsException;
+use ComBank\Transactions\InterestTransaction;
 
 require_once 'bootstrap.php';
 
@@ -25,6 +26,8 @@ require_once 'bootstrap.php';
 $bankAccount1 = new BankAccount(400);
 $bankAccount2 = new BankAccount(200);
 $bankAccount2->applyOverdraft(new SilverOverdraft());
+$bankAccount3 = new BankAccount(200);
+$bankAccount3->applyOverdraft(new SilverOverdraft());
 
 pl('--------- [Start testing bank account #1, No overdraft] --------');
 try {
@@ -79,7 +82,7 @@ try {
     $bankAccount2->getBalance();
 
     // withdrawal -300
-    pl('Doing transaction deposit (-300) with current balance '. $bankAccount2->getBalance());
+    pl('Doing transaction deposit (-300) with current balance ' . $bankAccount2->getBalance());
     $bankAccount2->transaction(new WithdrawTransaction(300));
 
     pl('My new balance after withdrawal (-300) : ' . $bankAccount2->getBalance());
@@ -126,3 +129,7 @@ try {
 } catch (BankAccountException $e) {
     pl($e->getMessage());
 }
+
+//---[Bank account Interest]---/
+$bankAccount3->transaction(new InterestTransaction ());
+pl('Getting balance from Bank Account with SilverOverdraft Interest ' . $bankAccount3->getBalance());

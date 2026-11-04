@@ -1,4 +1,6 @@
-<?php namespace ComBank\OverdraftStrategy;
+<?php
+
+namespace ComBank\OverdraftStrategy;
 
 use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
 
@@ -12,7 +14,7 @@ use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
 
 class NoOverdraft implements OverdraftInterface
 {
-    
+
     public function isGrantOverdraftFunds(float $newAmount): bool
     {
         return ($this->getOverdraftFundsAmount() + $newAmount) >= 0;
@@ -22,5 +24,9 @@ class NoOverdraft implements OverdraftInterface
     {
         return 0.0;
     }
-   
+
+    public function getInterestRate(): float
+    {
+        return 0.01;
+    }
 }
