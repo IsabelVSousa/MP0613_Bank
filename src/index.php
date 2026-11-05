@@ -16,6 +16,7 @@ use ComBank\Exceptions\BankAccountException;
 use ComBank\Exceptions\FailedTransactionException;
 use ComBank\Exceptions\ZeroAmountException;
 use ComBank\Exceptions\InvalidOverdraftFundsException;
+use ComBank\Transactions\TransferTransaction;
 
 require_once 'bootstrap.php';
 
@@ -126,3 +127,37 @@ try {
 } catch (BankAccountException $e) {
     pl($e->getMessage());
 }
+
+//---[EXAMEN]---/
+pl('--------- [Start testing EXAM, No overdraft] --------');
+pl('--------- [Sample 1 ]--------');
+
+$accountSource1 = new BankAccount(500);
+$accountDestination1 = new BankAccount(200);
+
+pl('Doing transfer transaction (100) with current source balance: ' . $accountSource1->getBalance());
+pl('Doing transfer transaction (100) with current destination balance: ' . $accountDestination1->getBalance());
+
+$accountSource1->transaction(new TransferTransaction(100,$accountDestination1));
+
+pl('Source account balance after last transaction : ' . $accountSource1->getBalance());
+pl('Destination account balance after last transaction : ' . $accountDestination1->getBalance());
+
+pl('--------- [Sample 2 ]--------');
+
+$accountSource2 = new BankAccount(50);
+$accountDestination2 = new BankAccount(200);
+
+pl('Doing transfer transaction (100) with current source balance: ' . $accountSource2->getBalance());
+pl('Doing transfer transaction (100) with current destination balance: ' . $accountDestination2->getBalance());
+
+try {
+$accountSource2->transaction(new TransferTransaction(100,$accountDestination2));
+} catch (FailedTransactionException $e) {
+    pl('Error transaction: ' . $e->getMessage());
+} catch (InvalidOverdraftFundsException $e) {
+    pl('Error transaction: ' . $e->getMessage());
+}
+
+pl('Source account balance after last transaction : ' . $accountSource2->getBalance());
+pl('Destination account balance after last transaction : ' . $accountDestination2->getBalance());
